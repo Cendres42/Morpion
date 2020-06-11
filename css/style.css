@@ -2,7 +2,9 @@ body{
     font-family: 'Merienda One', cursive;
     background-image: url('../images/fond.jpg');
 }
-
+input{
+  font-size:1.5em;
+}
 header{
   display:flex;
   background-color: black;
@@ -21,21 +23,20 @@ header img{
   margin-left:2em;
 }
 
-.joueur, button{
+.joueur, button, a{
   display: flex;
   margin:0.5em;
   background-color: black;
   color:white;
   font-size:1.5em;
-  width:15em;
-  text-align: center;
+  justify-content: center;
 }
-/*h2{
+h2{
   background-color: black;
   color:white;
   width:15em;
   text-align: center;
-}*/
+}
 #mode, #blocsmilieu{
   display:flex;
   justify-content: center;
@@ -71,7 +72,7 @@ color:white;
 #a7, #a8 {
   border-right: 0.5em solid red;
 }
-#symboles, #nomJoueur{
+#symboles, #nomJoueur, #nomVainqueur{
   font-size:2em;
   color:white;
   text-align: center;

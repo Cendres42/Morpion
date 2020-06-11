@@ -41,17 +41,21 @@ function choixCellule(){
 
 function selection () {
   let img = document.createElement("img");
-  if (joueur.innerHTML==joueur1.innerHTML){
-    img.src = "../images/cercle1.png";
-    this.appendChild(img);
-    changerJoueur();
+  let str=this.innerHTML;
+  let test= str.indexOf("img");
+  if(test == -1){
+    if (joueur.innerHTML==joueur1.innerHTML){
+      img.src = "../images/cercle1.png";
+      this.appendChild(img);
+      changerJoueur();
+    }
+    else{
+      img.src = "../images/croix1.png";
+      this.appendChild(img);
+      changerJoueur();
+    }
+    morpion();
   }
-  else{
-    img.src = "../images/croix1.png";
-    this.appendChild(img);
-    changerJoueur();
-  }
-  morpion();
 }
 
 function changerJoueur(){
@@ -65,17 +69,23 @@ function changerJoueur(){
 }
 
 function morpion(){
-  testMorpion(1);
-  testMorpion(4);
-  testMorpion(3);
+  testMorpion(1,1);
+  testMorpion(1,4);
+  testMorpion(1,3);
+  testMorpion(2,3);
+  testMorpion(3,3);
+  testMorpion(4,1);
+  testMorpion(5,1);
+  testMorpion(3,2);
+  testJeufini();
 }
 
 
-  function testMorpion(inc){
+  function testMorpion(deb,inc){
     let compteurJ1=0;
     let compteurJ2=0;
     for(let j=0; j<3;j++) {
-      let qs="a"+(1+(j*inc));
+      let qs="a"+(deb+(j*inc));
       let str=document.getElementById(qs).innerHTML;
       testCercle= str.indexOf("cercle");
       testCroix= str.indexOf("croix");
@@ -86,35 +96,58 @@ function morpion(){
         compteurJ2=compteurJ2+1;
       }
       if (compteurJ1==3){
-        alert("Joueur 1 a gagné");
+        sessionStorage.setItem("vainqueur",JSON.stringify(joueur1.innerHTML));
+        finDuJeu();
+
       }
       if (compteurJ2==3){
-        alert("Joueur 2 a gagné");
+        sessionStorage.setItem("vainqueur",JSON.stringify(joueur2.innerHTML));
+        finDuJeu();
       }
     }
 }
-  /*let qs="a2";
-  let str=getElementById(qs).innerHTML;
-  let test= str.indexOf("cercle");
-  if(test == -1){
-    return false;
+
+function testJeufini(){
+  let compteur=0;
+  for(let j=1; j<=9;j++) {
+    let qs="a"+j;
+    let str=document.getElementById(qs).innerHTML;
+    test= str.indexOf("img");
+    if(test !== -1){
+      compteur+=1;
+    }
   }
-  let qs="a4";
-  let str=getElementById(qs).innerHTML;
-  let test= str.indexOf("cercle");
-  if(test == -1){
-    return false;
+  if(compteur==9){
+    sessionStorage.setItem("vainqueur",JSON.stringify("personne n'"));
+    finDuJeu();
   }
-  let qs="a5";
-  let str=getElementById(qs).innerHTML;
-  let test= str.indexOf("cercle");
-  if(test == -1){
-    return false;
+}
+
+function finDuJeu(){
+  document.location.href="resultats.html";
+}
+
+function enregistrement(){
+let boutonEnregistrement=document.getElementById("boutonEnregistrer");
+boutonEnregistrement.onclick=enregistrer;
+}
+
+function enregistrer(){
+  let partieEnCours=[];
+  for (let i=1;i<=9;i++){
+    let qs="a"+i;
+    partieEnCours.push(document.getElementById(qs).innerHTML)
+    sessionStorage.setItem("partieEnCours",JSON.stringify(joueur1.innerHTML+joueur2.innerHTML))
+    sessionStorage.setItem("partieAreprendre"+joueur1.innerHTML+joueur2.innerHTML,JSON.stringify(partieEnCours));
+    document.location.href="accueil.html";
   }
-}*/
+}
+
+
 
 
 window.addEventListener("load", function(){
   choixCellule();
   survoler();
+  enregistrement();
 });
