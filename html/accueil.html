@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <title>Morpion, le jeu pour les ...</title>
+    <meta name="description" content="Jouer au morpion, seul ou à deux!">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="shortcut icon" type="image/png" src="../images/logo.jpg" >
+	  <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merienda+One&display=swap" rel="stylesheet">
+    <script src="../js/morpion.js" defer> </script>
+</head>
+<body>
+    <header>
+      <img src="../images/fond.jpg" alt="logo"/>
+      <h1> Morpion</h1>
+    </header>
+    <div id="conteneur">
+        <div id="mode">
+          <h2> Mode de jeu </h2>
+          <select class="joueur" name="j" size="1">
+          <option value="Duo">Duo</option>
+          <option value="Solo">Solo</option>
+          <option value="Battle">Battle</option>
+          </select>
+        </div>
+        <div id="blocsmilieu">
+          <div class="joueur">
+            <label class="label" for="nomJ1">Nom joueur 1</label>
+            <input type="text" name="nomJ1" id="nomJ1" class="form-control" pattern="[A-Za-z]{3,20}" required/>
+          </div>
+          <div class="joueur">
+            <label class="label" for="nomJ1">Nom joueur 2</label>
+            <input type="text" name="nomJ2" id="nomJ2" title="nom" class="form-control" pattern="[A-Za-z]{3,20}" required/>
+          </div>
+          <div id="boutonJouer">
+            <button href="jeu.html"> JOUER</button>
+          </div>
+          <div>
+            <h2> Continuer une partie</h2>
+            <table>
+            </table>
+        </div>
+      </div>
+    </div>
+</body>
