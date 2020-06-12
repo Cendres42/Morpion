@@ -139,21 +139,20 @@ boutonEnregistrement.addEventListener("click",function(){
     nomPartie=(adresse.replace('?partie=', ''));
   }
   else{
-    while(nomPartie==null){
-      alert("Vous devez choisir un nom pour enregistrer votre partie");
-      nomPartie=prompt("Choisissez un nom pour enregistrer votre partie");
-      let test2 = listeParties.indexOf(nomPartie);
-      if(test2!==-1){
-        alert("Choisissez un autre nom de partie, celui-ci est déjà pris!!");
-        nomPartie=null;
+        nomPartie=prompt("Choisissez un nom pour enregistrer votre partie");
+        let test2 = listeParties.indexOf(nomPartie);
+        if((test2!==-1)&&(nomPartie!==null)){
+          alert("Choisissez un autre nom de partie, celui-ci est déjà pris!!");
+          nomPartie=prompt("Choisissez un nom pour enregistrer votre partie");
+          }
+        else{
+          listeParties.push(nomPartie);
+          sessionStorage.setItem("listeParties",JSON.stringify(listeParties));
+          }
         }
-      else{
-        listeParties.push(nomPartie);
-        sessionStorage.setItem("listeParties",JSON.stringify(listeParties));
-        }
+      if(nomPartie!==null){
+        enregistrer(nomPartie);
       }
-    }
-    enregistrer(nomPartie);
   });
   }
 
