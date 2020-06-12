@@ -1,9 +1,7 @@
 let joueur=document.querySelector("h2 span");
 let joueur1=document.querySelector("#symboleJ1 span");
 let joueur2=document.querySelector("#symboleJ2 span");
-joueur1.innerHTML=JSON.parse(sessionStorage.getItem("J1"));
-joueur2.innerHTML=JSON.parse(sessionStorage.getItem("J2"));
-joueur.innerHTML=JSON.parse(sessionStorage.getItem("J1"));
+
 
 function survoler(){
     for(let i=1; i<=9; i++){
@@ -117,7 +115,7 @@ function testJeufini(){
       compteur+=1;
     }
   }
-  if(compteur==9){
+  if((compteur==9)&&(compteurJ1!==3)&&(compteurJ2!==3)){
     sessionStorage.setItem("vainqueur",JSON.stringify("personne n'"));
     finDuJeu();
   }
@@ -129,20 +127,103 @@ function finDuJeu(){
 
 function enregistrement(){
 let boutonEnregistrement=document.getElementById("boutonEnregistrer");
-boutonEnregistrement.onclick=enregistrer;
-}
+boutonEnregistrement.addEventListener("click",function(){
+  let listeParties=JSON.parse(sessionStorage.getItem("listeParties"));
+  if(listeParties==null){
+    listeParties=[];
+  }
+  let adresse=window.location.search;
+  let test= adresse.indexOf("partie");
+  let nomPartie;
+  if(test==1){
+    nomPartie=(adresse.replace('?partie=', ''));
+  }
+  else{
+    while(nomPartie==null){
+      alert("Vous devez choisir un nom pour enregistrer votre partie");
+      nomPartie=prompt("Choisissez un nom pour enregistrer votre partie");
+      let test2 = listeParties.indexOf(nomPartie);
+      if(test2!==-1){
+        alert("Choisissez un autre nom de partie, celui-ci est déjà pris!!");
+        nomPartie=null;
+        }
+      else{
+        listeParties.push(nomPartie);
+        sessionStorage.setItem("listeParties",JSON.stringify(listeParties));
+        }
+      }
+    }
+    enregistrer(nomPartie);
+  });
+  }
 
-function enregistrer(){
+
+
+function enregistrer(nomPartie){
+  let objetPartie={};
   let partieEnCours=[];
   for (let i=1;i<=9;i++){
     let qs="a"+i;
     partieEnCours.push(document.getElementById(qs).innerHTML)
-    sessionStorage.setItem("partieEnCours",JSON.stringify(joueur1.innerHTML+joueur2.innerHTML))
-    sessionStorage.setItem("partieAreprendre"+joueur1.innerHTML+joueur2.innerHTML,JSON.stringify(partieEnCours));
-    document.location.href="accueil.html";
-  }
+    }
+    //clef grille de l'objet partie avec valeur des cases
+   objetPartie.grille=partieEnCours;
+   objetPartie.joueur1=joueur1.innerHTML;
+   objetPartie.joueur2=joueur2.innerHTML;
+   sessionStorage.setItem(nomPartie,JSON.stringify(objetPartie));
+   document.location.href="accueil.html";
 }
 
+function initialiserPartie(){
+let adresse=window.location.search;
+let test= adresse.indexOf("partie");
+if(test==1){
+  let nomPartie=(adresse.replace('?partie=', ''));
+  let partieAfficher=JSON.parse(sessionStorage.getItem(nomPartie));
+  if(partieAfficher==null){
+    document.location.href="accueil.html";
+  }
+  let compteurJ1=0;
+  let compteurJ2=0;
+  for (let j=1; j<=9; j++){
+    let qs="a"+j;
+    let nouvelleCase=document.getElementById(qs);
+    nouvelleCase.innerHTML=partieAfficher.grille[j-1];
+    console.log(nouvelleCase.innerHTML);
+    let testJoueur=nouvelleCase.innerHTML;
+    let testCercle=testJoueur.indexOf("cercle");
+    let testCroix=testJoueur.indexOf("croix");
+    if(testCercle!==-1){
+        compteurJ1=compteurJ1+1;
+      }
+    else if(testCroix!==-1){
+      compteurJ2=compteurJ2+1;
+      }
+    console.log(compteurJ1);
+    console.log(compteurJ2);
+    joueur1.innerHTML=partieAfficher.joueur1;
+    joueur2.innerHTML=partieAfficher.joueur2;
+    if (compteurJ1>compteurJ2){
+      joueur.innerHTML=partieAfficher.joueur2;
+      }
+    else {
+      joueur.innerHTML=partieAfficher.joueur1;
+      }
+    }
+  }
+  else{
+    let nb1=Math.floor(Math.random() * 2);
+    console.log(nb1);
+    joueur1.innerHTML=JSON.parse(sessionStorage.getItem("J1"));
+    joueur2.innerHTML=JSON.parse(sessionStorage.getItem("J2"));
+    if (nb1==1){
+      joueur.innerHTML=JSON.parse(sessionStorage.getItem("J1"));
+      }
+    else {
+      joueur.innerHTML=JSON.parse(sessionStorage.getItem("J2"));
+      }
+    }
+  }
 
 
 
@@ -150,4 +231,5 @@ window.addEventListener("load", function(){
   choixCellule();
   survoler();
   enregistrement();
+  initialiserPartie();
 });

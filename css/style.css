@@ -72,7 +72,7 @@ color:white;
 #a7, #a8 {
   border-right: 0.5em solid red;
 }
-#symboles, #nomJoueur, #nomVainqueur{
+#symboles, #nomJoueur, #nomVainqueur, table{
   font-size:2em;
   color:white;
   text-align: center;
